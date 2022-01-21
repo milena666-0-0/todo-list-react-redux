@@ -9,7 +9,6 @@ import { styles } from "./styles";
 const useStyles = makeStyles(styles);
 
 export const MainLayout = () => {
-
 	const classes = useStyles();
 
 	return (

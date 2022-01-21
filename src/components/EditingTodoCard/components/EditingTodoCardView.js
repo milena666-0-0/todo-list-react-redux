@@ -22,6 +22,7 @@ export const EditingTodoCardView = memo(({
 				onChange={handleChange}
 				multiline={true}
 				variant="outlined"
+				autoFocus={true}
 			/>
 			<Box className={classes.boxContainer}>
 				<Button type="submit" onClick={handleCancelTodoCardEditing} variant="contained">Cancel</Button>

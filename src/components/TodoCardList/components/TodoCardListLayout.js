@@ -9,6 +9,7 @@ export const TodoCardListLayout = ({
 	todoCards,
 	handleTodoCardDelete,
 	handleTodoCardComplete,
+	handleStartEditingTodoCard
 }) => {
 	return (
 		<List>
@@ -20,6 +21,7 @@ export const TodoCardListLayout = ({
 								todoCard={todoCard}
 								handleTodoCardComplete={handleTodoCardComplete}
 								handleTodoCardDelete={handleTodoCardDelete}
+								handleStartEditingTodoCard={handleStartEditingTodoCard}
 							/>
 						</Collapse>
 					))}

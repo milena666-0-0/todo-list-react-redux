@@ -5,13 +5,19 @@ import { AddTaskFormView } from "../components/AddTaskFormView";
 import {useControlledInput} from '../../../hooks/index';
 
 export const AddTaskFormContainer = () => {
+	const dispatch = useDispatch();
+
 
 	const { inputValue, handleReset, handleChange } = useControlledInput('');
 
-	const dispatch = useDispatch();
-
 	const handleSubmit = (e) => {
+
 		e.preventDefault();
+
+		if(inputValue === '') {
+			return;
+		};
+		
 		dispatch(CREATE_TODO_CARD(inputValue));
 		handleReset();
 	};

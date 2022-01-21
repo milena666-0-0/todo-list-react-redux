@@ -4,7 +4,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import Fade from "@mui/material/Fade";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { makeStyles } from "@mui/styles";
-import { memo, useState } from "react";
+import { memo } from "react";
 import PropTypes from "prop-types";
 
 import { EditingTodoCardContainer } from "../EditingTodoCard/containers/EditingTodoCardContainer";
@@ -14,20 +14,20 @@ import { styles } from "./styles";
 const useStyles = makeStyles(styles);
 
 export const TodoCardView = memo(
-	({ todoCard, handleTodoCardDelete, handleTodoCardComplete }) => {
+	({
+		todoCard,
+		handleTodoCardDelete,
+		handleTodoCardComplete,
+		handleStartEditingTodoCard,
+	}) => {
 		const classes = useStyles();
 
-		const { id, label, completed } = todoCard;
-
-		const [isEditing, setIsEditing] = useState(false);
+		const { id, label, completed, isEditing } = todoCard;
 
 		return (
 			<ListItem disableGutters={true}>
 				{isEditing ? (
-					<EditingTodoCardContainer
-						setIsEditing={setIsEditing}
-						todoCard={todoCard}
-					/>
+					<EditingTodoCardContainer todoCard={todoCard} />
 				) : (
 					<Card className={classes.cardContainer}>
 						<CardContent className={classes.cardContent}>
@@ -44,10 +44,7 @@ export const TodoCardView = memo(
 								{}
 							</Box>
 							<Box className={classes.boxContainer}>
-								<BorderColorIcon
-									onClick={setIsEditing}
-									className={classes.editIcon}
-								/>
+								<BorderColorIcon onClick={() => handleStartEditingTodoCard(id)} className={classes.editIcon} />
 								<DeleteIcon
 									onClick={() => handleTodoCardDelete(id)}
 									className={classes.deleteIcon}

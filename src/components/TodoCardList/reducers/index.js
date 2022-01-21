@@ -1,5 +1,6 @@
 import { handleActions } from "redux-actions";
 import { v4 as uuidv4 } from 'uuid';
+import {cloneDeep} from 'lodash';
 
 import * as actions from "../actions/index";
 
@@ -14,6 +15,7 @@ export const todoCardsReducer = handleActions(
 				id: uuidv4(),
 				label,
 				completed: false,
+				isEditing: false
 			};
 			const updatedTodoCardsList = [...state.todoCards, newCard];
 
@@ -23,7 +25,7 @@ export const todoCardsReducer = handleActions(
 			};
 		},
 		[actions.DELETE_TODO_CARD]: (state, { payload: id }) => {
-			const copy = [...state.todoCards];
+			const copy = cloneDeep(state.todoCards);
 
 			const findIndex = copy.findIndex((card) => card.id === id);
 
@@ -34,31 +36,46 @@ export const todoCardsReducer = handleActions(
 				todoCards: copy,
 			};
 		},
-		[actions.EDIT_TODO_CARD]: (state, { payload }) => {
-			const copy = [...state.todoCards];
+		[actions.START_EDITING_TODO_CARD]: (state, { payload: id }) => {
+			const copy = cloneDeep(state.todoCards);
 			
-			const newCardList = copy.map((card) => 
-				card.id === payload.id ? { ...card, label: payload.label } : card
-			);
+			const findTodoCardToEdit = copy.find((card) => card.id === id );
+
+			findTodoCardToEdit.isEditing = true;
+
+			console.log(1)
 			
 			return {
 				...state,
-				todoCards: newCardList,
+				todoCards: copy,
 			};
 		},
 		
 		[actions.COMPLETE_TODO_CARD]: (state, { payload: id }) => {
-			const copy = [...state.todoCards];
+			const copy = cloneDeep(state.todoCards);
 
-			const newCardList = copy.map((card) =>
-				card.id === id ? { ...card, completed: !card.completed } : card
-			);
+			const findTodoCardToComplete = copy.find((card) => card.id === id );
+
+			findTodoCardToComplete.completed = !findTodoCardToComplete.completed;
 
 			return {
 				...state,
-				todoCards: newCardList,
+				todoCards: copy,
 			};
 		},
+		[actions.SAVE_TODO_CARD]: (state, { payload}) => {
+			const copy = cloneDeep(state.todoCards);
+
+			const findTodoCardToSave = copy.find((card) => card.id === payload.id );
+
+			findTodoCardToSave.isEditing = false;
+			findTodoCardToSave.label = payload.label;
+
+			return {
+				...state,
+				todoCards: copy,
+			}
+		}
 	},
 	defaultState
 );
